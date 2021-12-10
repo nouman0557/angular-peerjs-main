@@ -10,7 +10,7 @@ export class CallService {
 
     private peer: Peer;
     private mediaCall: Peer.MediaConnection;
-  
+
     private localStreamBs: BehaviorSubject<MediaStream> = new BehaviorSubject(null);
     public localStream$ = this.localStreamBs.asObservable();
     private remoteStreamBs: BehaviorSubject<MediaStream> = new BehaviorSubject(null);
@@ -87,10 +87,10 @@ export class CallService {
             const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
             this.localStreamBs.next(stream);
             this.peer.on('call', async (call) => {
-    
+
                 this.mediaCall = call;
                 this.isCallStartedBs.next(true);
-    
+
                 this.mediaCall.answer(stream);
                 this.mediaCall.on('stream', (remoteStream) => {
                     this.remoteStreamBs.next(remoteStream);
@@ -101,12 +101,12 @@ export class CallService {
                     console.error(err);
                 });
                 this.mediaCall.on('close', () => this.onCallClose());
-            });            
+            });
         }
         catch (ex) {
             console.error(ex);
             this.snackBar.open(ex, 'Close');
-            this.isCallStartedBs.next(false);            
+            this.isCallStartedBs.next(false);
         }
     }
 
@@ -133,5 +133,7 @@ export class CallService {
         this.peer?.disconnect();
         this.peer?.destroy();
     }
+
+
 
 }

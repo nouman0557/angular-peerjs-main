@@ -13,12 +13,17 @@ import { FormsModule } from '@angular/forms';
 import { ClipboardModule } from '@angular/cdk/clipboard';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { CallService } from './call.service';
+import { ApiTestingComponent } from './api-testing/api-testing.component';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { PhoneAuthService } from './firebase/phone-auth.service';
+import { ErrorInterceptorService } from './utilities/eror-interceptor.service';
 
 
 @NgModule({
   declarations: [
     AppComponent,
-    CallInfoDialogComponents
+    CallInfoDialogComponents,
+    ApiTestingComponent
   ],
   imports: [
     BrowserModule,
@@ -30,11 +35,18 @@ import { CallService } from './call.service';
     MatFormFieldModule,
     MatInputModule,
     ClipboardModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    HttpClientModule
 
   ],
   providers: [
-    CallService
+    CallService,
+    PhoneAuthService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: ErrorInterceptorService,
+      multi: true
+    },
   ],
   bootstrap: [AppComponent]
 })
